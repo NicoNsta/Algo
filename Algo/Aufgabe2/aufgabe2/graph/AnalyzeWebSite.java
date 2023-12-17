@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class AnalyzeWebSite {
     public static void main(String[] args) throws IOException {
         // Graph aus Website erstellen und ausgeben:
-        DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("Aufgabe2\\aufgabe2\\data\\WebSiteKlein");
-        // DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("Aufgabe2\\aufgabe2\\data\\WebSiteGross");
+        DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("Algo\\Algo\\Aufgabe2\\aufgabe2\\data\\WebSiteGross");
+        // DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("Algo\Algo\Aufgabe2\aufgabe2\data\WebSiteKlein");
         System.out.println("Anzahl Seiten: \t" + webSiteGraph.getNumberOfVertexes());
         System.out.println("Anzahl Links: \t" + webSiteGraph.getNumberOfEdges());
         //System.out.println(webSiteGraph);
