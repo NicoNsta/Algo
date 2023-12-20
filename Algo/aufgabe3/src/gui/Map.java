@@ -25,7 +25,7 @@ public class Map extends JPanel {
 		size = new Dimension();
 		
 		// create a buffered image and copy image data from file to buffer
-		bimage = ImageIO.read(new File("data/london.jpg"));
+		bimage = ImageIO.read(new File("Algo\\Algo\\Aufgabe3\\data\\london.jpg"));
 		g2d = bimage.createGraphics();
 		size.width = bimage.getWidth(null);
 		size.height = bimage.getHeight(null);
@@ -65,7 +65,7 @@ public class Map extends JPanel {
 	
 	public void clearMap() throws IOException {
 		g2d.dispose();
-		bimage = ImageIO.read(new File("data/london.jpg"));
+		bimage = ImageIO.read(new File("Algo\\Algo\\Aufgabe3\\data\\london.jpg"));
 		g2d = bimage.createGraphics();
 		repaint();
 	}

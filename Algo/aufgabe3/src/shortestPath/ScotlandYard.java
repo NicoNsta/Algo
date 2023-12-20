@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 
 /**
@@ -34,9 +35,39 @@ public class ScotlandYard {
 	public static DirectedGraph<Integer> getGraph() throws FileNotFoundException {
 
 		DirectedGraph<Integer> sy_graph = new AdjacencyListDirectedGraph<>();
-		Scanner in = new Scanner(new File("data/ScotlandYard_Kanten.txt"));
+		Scanner in = new Scanner(new File("Algo\\Algo\\Aufgabe3\\data\\ScotlandYard_Kanten.txt"));
 
-		// ...
+		while (in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] words = line.split(" ");
+
+			if (words.length < 3)
+				continue;
+
+			int v = Integer.parseInt(words[0]);
+    		int u = Integer.parseInt(words[1]);
+			double dist = 0;
+
+			sy_graph.addVertex(v);
+    		sy_graph.addVertex(u);
+
+			if (words[2].equals("UBahn")) {
+				dist = 5.0;
+			}
+
+			if (words[2].equals("Taxi")) {
+				dist = 2.0;
+			}
+
+			if (words[2].equals("Bus")) {
+				dist = 3.0;
+			}
+
+			if (!sy_graph.containsEdge(v, u) || sy_graph.getWeight(v, u) > dist) {
+				sy_graph.addEdge(v, u, dist);
+				sy_graph.addEdge(u, v, dist);
+			}
+		}
 		
 		// Test, ob alle Kanten eingelesen wurden: 
 		System.out.println("Number of Vertices:       " + sy_graph.getNumberOfVertexes());	// 199
@@ -76,8 +107,8 @@ public class ScotlandYard {
 
 		DirectedGraph<Integer> syGraph = getGraph();
 		
-		Heuristic<Integer> syHeuristic = null; // Dijkstra
-		//Heuristic<Integer> syHeuristic = getHeuristic(); // A*
+		// Heuristic<Integer> syHeuristic = null; // Dijkstra
+		Heuristic<Integer> syHeuristic = getHeuristic(); // A*
 
 		ShortestPath<Integer> sySp = new ShortestPath<Integer>(syGraph,syHeuristic);
 
@@ -101,8 +132,8 @@ public class ScotlandYard {
 		sySp.setSimulator(sim);
 		sim.startSequence("Shortest path from 1 to 173");
 
-		//sySp.searchShortestPath(65,157); // 9.0
-		//sySp.searchShortestPath(1,175); //25.0
+		// sySp.searchShortestPath(65,157); // 9.0
+		// sySp.searchShortestPath(1,175); //25.0
 		
 		sySp.searchShortestPath(1,173); //22.0
 		// bei Heuristik-Faktor von 1/10 wird nicht der optimale Pfad produziert.
@@ -139,12 +170,30 @@ class ScotlandYardHeuristic implements Heuristic<Integer> {
 	}
 
 	public ScotlandYardHeuristic() throws FileNotFoundException {
-		// ...
+
+		DirectedGraph<Integer> sy2_graph = new AdjacencyListDirectedGraph<>();
+		Scanner in = new Scanner(new File("Algo\\Algo\\Aufgabe3\\data\\ScotlandYard_Knoten.txt"));
+
+		coord = new TreeMap<>();
+
+		while (in.hasNextInt()) {
+			
+			int nr = in.nextInt();
+			int x = in.nextInt();
+			int y = in.nextInt();
+
+			coord.put(nr, new Point(x, y));
+		}
 	}
 
 	public double estimatedCost(Integer u, Integer v) {
-		// ...
-		return 0.0;
+		Point p1 = coord.get(u);
+		Point p2 = coord.get(v);
+
+		double dx = p1.x - p2.x;
+		double dy = p1.y - p2.y;
+
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 }
 

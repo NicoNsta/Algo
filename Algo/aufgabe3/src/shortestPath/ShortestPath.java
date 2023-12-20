@@ -4,6 +4,10 @@
 // import directedGraph.*;
 import sim.SYSimulation;
 import java.util.Map;
+
+import org.w3c.dom.Node;
+
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +79,10 @@ public class ShortestPath<V> {
 	 */
 	public void searchShortestPath(V s, V g) {
 
+		dist.clear();
+		pred.clear();
+		cand.clear();
+
 		this.start = s;
 		this.goal = g;
 
@@ -90,7 +98,10 @@ public class ShortestPath<V> {
 
 			while (!cand.isEmpty()) {
 				V v = cand.removeMin();
-				System.out.println("Besuche Knoten " + v + " mit d = " + dist.get(v)); 
+				
+				// System.out.println("Besuche Knoten " + v + " mit d = " + dist.get(v));
+				if (sim != null)       		
+					sim.visitStation((Integer) v, Color.blue);
 				
 				for (V w : graph.getSuccessorVertexSet(v)) {
 					if (dist.get(w) == Double.POSITIVE_INFINITY) {
@@ -115,20 +126,31 @@ public class ShortestPath<V> {
 
 			while (!cand.isEmpty()) {
 				V v = cand.removeMin();
-				System.out.println("Besuche Knoten " + v + " mit d = " + dist.get(v)); 
+
+				// System.out.println("Besuche Knoten " + v + " mit d = " + dist.get(v)); 
+				if (sim != null)       		
+					sim.visitStation((Integer) v, Color.blue);
 
 				if (v == g) 
 					break;
 
+				HashMap<V, Boolean> inQueue = new HashMap<V, Boolean>();
+				
 				for (V w : graph.getSuccessorVertexSet(v)) {
 					if (dist.get(w) == Double.POSITIVE_INFINITY) {
 						dist.put(w, dist.get(v) + graph.getWeight(v, w));
 						pred.put(w, v);
 						cand.add(w, dist.get(w) + h.estimatedCost(w, g));
+						inQueue.put(w, true);
 					} else if (dist.get(w) > dist.get(v) + graph.getWeight(v, w)) {
 						dist.put(w, dist.get(v) + graph.getWeight(v, w));
 						pred.put(w, v);
-						cand.change(w, dist.get(w) + h.estimatedCost(w, g));
+						if (Boolean.TRUE.equals(inQueue.get(w))) {
+							cand.change(w, dist.get(w) + h.estimatedCost(w, g));
+						} else {
+							cand.add(w, dist.get(w) + h.estimatedCost(w, g));
+							inQueue.put(w, true);
+						}
 					}
 				}
 			}

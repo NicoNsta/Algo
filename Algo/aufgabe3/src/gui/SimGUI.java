@@ -46,7 +46,7 @@ public class SimGUI extends JFrame implements Runnable,ActionListener,ChangeList
 		stations = new TreeMap<Integer, Station>();
 		//String f = this.getClass().getResource("stations.txt").getPath();
 		//System.out.println("Filename = " + f);
-		readStationsFromFile("data/stations.txt");
+		readStationsFromFile("Algo\\Algo\\Aufgabe3\\data\\stations.txt");
 		mapEntries = new Vector<MapEntry>();
 		mapEntriesReplay = new Vector<MapEntry>();
 		lock = new Object();
